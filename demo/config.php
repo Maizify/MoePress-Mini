@@ -7,6 +7,10 @@ if (!defined('MOEPRESS_VERSION')) { die('Access Forbidden'); }
 
 $_CONFIG = array(
 	
+	// debug mode, when it is true, MoePress exceptions will be printed to browser.
+	// change it to false after you have finished development
+	'debug' => true,
+	
 	// if MoePress isn't in the root path of your domain ( e.g. http://mysite.com/projects/moepress-mini/demo/ ),
 	// then the 'base_uri' should be filled with the extra path, that is, 'projects/moepress-mini/demo'.
 	// otherwise, leave it empty.

@@ -1,12 +1,13 @@
 <?php
-define('MOEPRESS_VERSION', '1.0');
+define('MOEPRESS_VERSION', '1.1');
 
 /**
  * MoePress Mini
  *
  * A multi-level controller PHP framework
  *
- * @version 1.0
+ * @version 1.1
+ * @update 2014-09-06
  * @since 2013-10-06
  * @author Cosify.com
  * @documentation http://www.cosify.com/work/moepress-mini
@@ -31,6 +32,8 @@ class MoePress
 	public $site_url = '';				// current site's URL
 	public $current_url = '';			// current URL
 	public $data = array();				// variables used in views
+	
+	protected $argc = array();			// the limitation of the number of controller's arguments
 	
 	
 	/**
@@ -93,7 +96,7 @@ class MoePress
 		}
 		extract($this->data);
 		
-		if ($this->ob_level===null) {
+		if ($this->ob_level === null) {
 			$this->ob_level = ob_get_level();
 		}
 		ob_start();
@@ -104,7 +107,7 @@ class MoePress
 			throw new Exception('View file "'.$file.'" does not exist.');
 		}
 		
-		if ($return==true) {
+		if ($return == true) {
 			$buffer = ob_get_contents();
 			@ob_end_clean();
 			return $buffer;
@@ -246,7 +249,7 @@ class MoePress
 	/**
 	 * Run MoePress
 	 *
-	 * @version 2013-10-09
+	 * @version 2014-09-06
 	 */
 	static public function run()
 	{
@@ -287,7 +290,7 @@ class MoePress
 		
 		// routing
 		// note that the $request_uri can be matched and changed more than onece
-		if (is_array($_CONFIG['routes']) and count($_CONFIG['routes'])>0) {
+		if (is_array($_CONFIG['routes']) and count($_CONFIG['routes']) > 0) {
 			foreach ($_CONFIG['routes'] as $pattern => $subject) {
 				if (preg_match($pattern, $request_uri)) {
 					$request_uri = preg_replace($pattern, $subject, $request_uri);
@@ -299,7 +302,7 @@ class MoePress
 		$uris = explode('/', $request_uri);
 		$controller_args = array();
 		$controller_file = $controller_path.'main.php';
-		while (count($uris)>0) {
+		while (count($uris) > 0) {
 			$file = $controller_path.implode('/', $uris).'/main.php';
 			if (file_exists($file)) {
 				$controller_file = $file;
@@ -333,6 +336,22 @@ class MoePress
 		
 		if (!method_exists($MP, $method)) {
 			throw new Exception('Controller method "'.$method.'" does not exist.');
+		}
+		
+		// check the number of controller arguments
+		if ($MP->argc[$method]) {
+			$limit = $MP->argc[$method];
+			// the limitation should be [min_num, max_num]
+			if (is_numeric($limit)) {
+				$limit = array($limit, $limit);
+			}
+			if (!is_array($limit)) {
+				throw new Exception('The limitation of controller arguments is incorrect.');
+			}
+			$count = count($controller_args);
+			if ( !($count >= $limit[0] and $count <= $limit[1]) ) {
+				throw new Exception('The number of controller\'s arguments is incorrect.');
+			}
 		}
 		
 		// pass the args to the controller method, and run it
@@ -388,17 +407,21 @@ try {
 	
 } catch (Exception $e) {
 
-	$traces = $e->getTrace();
-	echo '<h1>Exception</h1>';
-	echo '<div>'.$e->getMessage().'</div>';
-	foreach ($traces as $trace) {
-		echo '<ul>';
-		echo '<li>File: '.$trace['file'].'</li>';
-		echo '<li>Line: '.$trace['line'].'</li>';
-		echo '<li>In function "'.$trace['function'].'" of class "'.$trace['class'].'"</li>';
-		echo '</ul>';
+	if (MoePress::$config['debug'] != false) {
+		$traces = $e->getTrace();
+		echo '<h1>Exception</h1>';
+		echo '<div>'.$e->getMessage().'</div>';
+		foreach ($traces as $trace) {
+			echo '<ul>';
+			echo '<li>File: '.$trace['file'].'</li>';
+			echo '<li>Line: '.$trace['line'].'</li>';
+			echo '<li>In function "'.$trace['function'].'" of class "'.$trace['class'].'"</li>';
+			echo '</ul>';
+		}
+	} else {
+		echo '<h1>Exception</h1>';
+		echo '<div>Try to contact the webmaster.</div>';
 	}
-	//v($e);
 	
 }
 
