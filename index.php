@@ -1,13 +1,13 @@
 <?php
-define('MOEPRESS_VERSION', '1.1');
+define('MOEPRESS_VERSION', '1.1.1');
 
 /**
  * MoePress Mini
  *
  * A multi-level controller PHP framework
  *
- * @version 1.1
- * @update 2014-09-06
+ * @version 1.1.1
+ * @update 2014-10-12
  * @since 2013-10-06
  * @author Cosify.com
  * @documentation http://www.cosify.com/work/moepress-mini
@@ -40,7 +40,7 @@ class MoePress
 	 * Init Controller
 	 * DO NOT call this method more than ONCE.
 	 *
-	 * @version 2013-10-09
+	 * @version 2014-10-12
 	 */
 	public function __init()
 	{
@@ -55,7 +55,7 @@ class MoePress
 		$sp = strtolower($_SERVER['SERVER_PROTOCOL']);
 		$protocol = substr($sp, 0, strpos($sp, '/')) . $s;
 		$port = $_SERVER['SERVER_PORT']=='80' ? '' : ':'.$_SERVER['SERVER_PORT'];
-		$url = $protocol . '://' . $_SERVER['SERVER_NAME'] . $port . '/';
+		$url = $protocol . '://' . $_SERVER['HTTP_HOST'] . $port . '/';
 		
 		$this->site_url = $url;
 		if (MoePress::$config['base_uri']) {
