@@ -1,16 +1,16 @@
 <?php
-define('MOEPRESS_VERSION', '1.1.1');
+define('MOEPRESS_VERSION', '1.1.2');
 
 /**
  * MoePress Mini
  *
  * A multi-level controller PHP framework
  *
- * @version 1.1.1
- * @update 2014-10-12
+ * @version 1.1.2
+ * @update 2015-04-24
  * @since 2013-10-06
- * @author Cosify.com
- * @documentation http://www.cosify.com/work/moepress-mini
+ * @author Maizify.com
+ * @documentation http://www.maizify.com/work/moepress-mini
  *
  */
 class MoePress
