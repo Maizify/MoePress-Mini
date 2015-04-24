@@ -415,7 +415,7 @@ class MySQL
 	 * @param string $as table alias
 	 * @return object
 	 */
-	public function from($from, $as)
+	public function from($from, $as = '')
 	{
 		$this->_from[] = '`'.$from.'`' . ($as ? ' AS '.$as : '');
 		return $this;

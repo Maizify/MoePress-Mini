@@ -24,7 +24,7 @@ class Obj
 	
 	
 	
-	function __construct($id, $primary_key)
+	function __construct($id = null, $primary_key = '')
 	{
 		if ($id !== null)
 		{
@@ -158,6 +158,10 @@ class Obj
 	{
 		foreach ($this->attr as $key => $value)
 		{
+			if (!isset($this->attr_types[$key]))
+			{
+				continue;
+			}
 			$type = $this->attr_types[$key];
 			switch ($type)
 			{

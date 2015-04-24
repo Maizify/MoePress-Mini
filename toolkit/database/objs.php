@@ -22,7 +22,7 @@ class Objs implements Iterator
 	
 	
 	
-	function __construct($docs)
+	function __construct($docs = null)
 	{
 		if ($docs !== null)
 		{

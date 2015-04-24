@@ -96,7 +96,7 @@ class Uri
 		parse_str($url_arr['query'], $query);
 		
 		// delete all URL queries
-		if ($opts['reset_all']==true)
+		if (isset($opts['reset_all']) and $opts['reset_all']==true)
 		{
 			foreach ($query as $key => $value)
 			{
@@ -122,7 +122,7 @@ class Uri
 		}
 		
 		// replace URL
-		if ($opts['url'])
+		if (isset($opts['url']) and $opts['url'])
 		{
 			$new_url_arr = parse_url($opts['url']);
 			unset($new_url_arr['query']);

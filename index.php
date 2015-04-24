@@ -290,7 +290,7 @@ class MoePress
 		
 		// routing
 		// note that the $request_uri can be matched and changed more than onece
-		if (is_array($_CONFIG['routes']) and count($_CONFIG['routes']) > 0) {
+		if (isset($_CONFIG['routes']) and is_array($_CONFIG['routes']) and count($_CONFIG['routes']) > 0) {
 			foreach ($_CONFIG['routes'] as $pattern => $subject) {
 				if (preg_match($pattern, $request_uri)) {
 					$request_uri = preg_replace($pattern, $subject, $request_uri);
@@ -339,7 +339,7 @@ class MoePress
 		}
 		
 		// check the number of controller arguments
-		if ($MP->argc[$method]) {
+		if (isset($MP->argc[$method])) {
 			$limit = $MP->argc[$method];
 			// the limitation should be [min_num, max_num]
 			if (is_numeric($limit)) {
