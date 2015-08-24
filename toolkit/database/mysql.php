@@ -2,7 +2,8 @@
 /**
  * MySQL ORM Library
  *
- * @since 2013-03-02
+ * @created 2013-03-02
+ * @version 2014-10-07
  * @author Maiz
  *
  * @usage 
@@ -280,6 +281,23 @@ class MySQL
 		} else {
 			return 0;
 		}
+	}
+	
+	
+	
+	/**
+	 * Get record count
+	 *
+	 * @version 2014-10-07
+	 *
+	 * @return int
+	 */
+	public function count()
+	{
+		$sql = $this->compile_count_sql();
+		$this->query($sql);
+		$count = intval($this->result[0]['__count']);
+		return $count;
 	}
 	
 	
@@ -688,6 +706,45 @@ class MySQL
 	{
 		$this->_orderby[$key] = $order;
 		return $this;
+	}
+	
+	
+	
+	/**
+	 * Compile SQL based on query factors
+	 *
+	 * @version 2014-10-07
+	 *
+	 * @return string
+	 */
+	protected function compile_count_sql()
+	{
+		// select
+		$sql = 'SELECT COUNT(1) AS __count ';
+		
+		// from
+		$sql .= 'FROM '.implode(', ', $this->_from).' ';
+		
+		// where
+		$sql .= $this->compile_where_sql();
+		
+		// group by
+		if ($this->_groupby) {
+			$sql .= 'GROUP BY '.implode(', ', $this->_groupby);
+		}
+		
+		// having
+		if ($this->_having) {
+			$having = array();
+			foreach ($this->_having as $value)
+			{
+				$having[] = $value['key'].' '.strtoupper($value['sign']).' '.$value['value'];
+			}
+			$sql .= 'HAVING '.implode(' AND ', $having);
+		}
+		
+		$sql .= ';';
+		return $sql;
 	}
 	
 	
