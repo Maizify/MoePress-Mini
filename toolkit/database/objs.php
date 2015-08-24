@@ -13,9 +13,13 @@ class Objs implements Iterator
 
 	// 数据库操作对象（指向单例模式数据库对象）
 	protected $db = null;
+	// 数据库操作记录，用于count()查询
+	protected $db_action = array();
 	
 	// 对象们
 	protected $rows = array();
+	// 总数
+	protected $count = 0;
 	
 	// 错误们
 	public $error = array();
@@ -64,6 +68,27 @@ class Objs implements Iterator
 		}
 		$this->install($rows);
 		return $this;
+	}
+	
+	
+	
+	/**
+	 * 获取总数
+	 *
+	 * @veresion 2014-10-07
+	 *
+	 * @return int
+	 */
+	public function count()
+	{
+		$this->count = 0;
+		foreach ($this->db_action as $method => $arg)
+		{
+			call_user_func_array(array($this->db, $method), $arg);
+		}
+		$this->count = $this->db->from($this->db_table)->count();
+		$this->db_action = array();
+		return $this->count;
 	}
 	
 	
@@ -173,41 +198,49 @@ class Objs implements Iterator
 	{
 		// e.g.: $this->_where('AND', $key, '=', $value, $filter);
 		$this->db->_where($logic, $key, $sign, $value);
+		$this->db_action[__FUNCTION__] = func_get_args();
 		return $this;
 	}
 	public function where($key, $value, $filter = true)
 	{
 		$this->db->where($key, $value, $filter);
+		$this->db_action[__FUNCTION__] = func_get_args();
 		return $this;
 	}
 	public function where_in($key, $value, $filter = true)
 	{
 		$this->db->where_in($key, $value, $filter);
+		$this->db_action[__FUNCTION__] = func_get_args();
 		return $this;
 	}
 	public function or_where($key, $value, $filter = true)
 	{
 		$this->db->or_where($key, $value, $filter);
+		$this->db_action[__FUNCTION__] = func_get_args();
 		return $this;
 	}
 	public function page($curpage, $perpage)
 	{
 		$this->db->page($curpage, $perpage);
+		$this->db_action[__FUNCTION__] = func_get_args();
 		return $this;
 	}
 	public function having($key, $sign, $value)
 	{
 		$this->db->having($key, $sign, $value);
+		$this->db_action[__FUNCTION__] = func_get_args();
 		return $this;
 	}
 	public function group_by($key)
 	{
 		$this->db->group_by($key);
+		$this->db_action[__FUNCTION__] = func_get_args();
 		return $this;
 	}
 	public function order_by($key, $order = 'DESC')
 	{
 		$this->db->order_by($key, $order);
+		$this->db_action[__FUNCTION__] = func_get_args();
 		return $this;
 	}
 	
