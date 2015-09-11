@@ -147,6 +147,30 @@ class Obj
 	
 	
 	/**
+	 * 删除数据库记录
+	 *
+	 * @version 2015-09-11
+	 *
+	 * @return boolean
+	 */
+	protected function db_delete()
+	{
+		$this->load_db();
+		$result = $this->db->table($this->db_table)->where($this->db_primary_key, $this->id)->limit(1)->delete();
+		
+		if ($result)
+		{
+			$this->reset_error();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	
+	/**
 	 * 修正字段类型
 	 * 已转换过的字段不会被重复转换
 	 *
