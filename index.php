@@ -1,16 +1,16 @@
 <?php
-define('MOEPRESS_VERSION', '1.1.2');
+define('MOEPRESS_VERSION', '1.1.3');
 
 /**
  * MoePress Mini
  *
  * A multi-level controller PHP framework
  *
- * @version 1.1.2
- * @update 2015-04-24
+ * @version 1.1.3
+ * @update 2016-08-11
  * @since 2013-10-06
- * @author Maizify.com
- * @documentation http://www.maizify.com/work/moepress-mini
+ * @author Maiz
+ * @documentation https://maizify.com/work/moepress-mini
  *
  */
 class MoePress
@@ -54,7 +54,8 @@ class MoePress
 		$s = empty($_SERVER['HTTPS']) ? '' : ($_SERVER['HTTPS'] == 'n') ? 's' : '';
 		$sp = strtolower($_SERVER['SERVER_PROTOCOL']);
 		$protocol = substr($sp, 0, strpos($sp, '/')) . $s;
-		$port = $_SERVER['SERVER_PORT']=='80' ? '' : ':'.$_SERVER['SERVER_PORT'];
+		$port = ':' . $_SERVER['SERVER_PORT'];
+		if ($port==':80' or $port==':443') { $port = ''; }
 		$url = $protocol . '://' . $_SERVER['HTTP_HOST'] . $port . '/';
 		
 		$this->site_url = $url;
