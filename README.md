@@ -4,4 +4,4 @@ MoePress-Mini
 A MVC PHP Framework with Multi-level Controller
 
 See offical website for more details and documentation:
-[http://www.maizify.com/work/moepress-mini](http://www.maizify.com/work/moepress-mini)
+[https://maizify.com/work/moepress-mini](https://maizify.com/work/moepress-mini)
