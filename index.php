@@ -59,7 +59,7 @@ class MoePress
 		$url = $protocol . '://' . $_SERVER['HTTP_HOST'] . $port . '/';
 		
 		$this->site_url = $url;
-		if (MoePress::$config['base_uri']) {
+		if (isset(MoePress::$config['base_uri']) and MoePress::$config['base_uri']) {
 			$this->site_url .= trim(MoePress::$config['base_uri'], '/') . '/';
 		}
 		$this->current_url = $url . ltrim($_SERVER['REQUEST_URI'], '/');
@@ -187,7 +187,7 @@ class MoePress
 		}
 		
 		foreach ($files as $file) {
-			if ($this->loaded_files[$type][$file]==true) {
+			if (isset($this->loaded_files[$type][$file]) and $this->loaded_files[$type][$file] == true) {
 				// this file has been loaded, so we do nothing here
 			} else if (file_exists($path.$file)) {
 				require_once($path.$file);
@@ -284,7 +284,7 @@ class MoePress
 		// get the requrest URI for routing
 		$request_uri = preg_replace('/\?(.*)/', '', $_SERVER['REQUEST_URI']);
 		// if a base URI is setted, then remove the base URI from the requrest URI
-		if ($_CONFIG['base_uri']) {
+		if (isset($_CONFIG['base_uri']) and $_CONFIG['base_uri']) {
 			$request_uri = str_replace(trim($_CONFIG['base_uri'], '/'), '', $request_uri);
 		}
 		$request_uri = trim($request_uri, '/');
@@ -408,7 +408,7 @@ try {
 	
 } catch (Exception $e) {
 
-	if (MoePress::$config['debug'] != false) {
+	if (isset(MoePress::$config['debug']) and MoePress::$config['debug'] != false) {
 		$traces = $e->getTrace();
 		echo '<h1>Exception</h1>';
 		echo '<div>'.$e->getMessage().'</div>';
