@@ -451,7 +451,7 @@ class MySQL
 	 * @param string $as table alias
 	 * @return object
 	 */
-	public function table($from, $as)
+	public function table($from, $as = '')
 	{
 		return $this->from($from, $as);
 	}
