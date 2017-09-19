@@ -29,7 +29,7 @@ class Cache
 	 * Get cache
 	 * Cache will be deleted if it is expired
 	 *
-	 * @version 2012-07-12
+	 * @version 2017-09-19
 	 *
 	 * @param	string	The name of cache
 	 * @param	int		Expire time in seconds, 0==no expire time
@@ -38,6 +38,10 @@ class Cache
 	static public function get($key, $expire = 0)
 	{
 		$file = self::$dir . $key . self::$suffix;
+		if (!file_exists($file))
+		{
+			return;
+		}
 		$value = file_get_contents($file);
 		if (!$value)
 		{
