@@ -7,7 +7,7 @@ define('MOEPRESS_VERSION', '1.1.4');
  * A multi-level controller PHP framework
  *
  * @version 1.1.4
- * @update 2017-09-14
+ * @update 2017-09-19
  * @since 2013-10-06
  * @author Maiz
  * @documentation https://maizify.com/work/moepress-mini

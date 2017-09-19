@@ -92,6 +92,7 @@ class Uri
 		$url .= ltrim($_SERVER['REQUEST_URI'], '/');
 		
 		// get current queries
+		$query = array();
 		$url_arr = parse_url($url);
 		parse_str($url_arr['query'], $query);
 		
